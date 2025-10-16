@@ -1,0 +1,31 @@
+{
+  "name": "qiankun-demo",
+  "version": "0.0.1",
+  "description": "微前端qiankun实战，主应用vue2，子应用vue2， react16",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  },
+  "scripts": {
+    "install": "npm-run-all --serial install:*",
+    "install:main": "cd main && npm i",
+    "install:sub-vue": "cd sub-vue && npm i",
+    "install:sub-react": "cd sub-react && npm i",
+    "start": "npm-run-all --parallel start:*",
+    "start:sub-react": "cd sub-react && npm start",
+    "start:sub-vue": "cd sub-vue && npm start",
+    "start:main": "cd main && npm start",
+    "build": "npm-run-all build:* && bash ./scripts/bundle.sh",
+    "build:sub-react": "cd sub-react && npm run build",
+    "build:sub-vue": "cd sub-vue && npm run build",
+    "build:main": "cd main && npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "qiankun",
+    "qiankun-demo"
+  ],
+  "author": "Ducr",
+  "license": "MIT"
+}
