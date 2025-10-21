@@ -13,7 +13,8 @@ module.exports = {
 
     config.output.library = `${name}-[name]`;
     config.output.libraryTarget = 'umd';
-    config.output.jsonpFunction = `webpackJsonp_${name}`;
+    config.output.jsonpFunction = `webpackJsonp_${name}`; // webpack4的配置
+    config.output.globalObject = 'window'; // webpack4的配置
     return config;
   },
   devServer: (configFunction) => {

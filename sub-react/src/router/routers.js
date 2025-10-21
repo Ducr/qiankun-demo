@@ -1,11 +1,23 @@
 import React from 'react';
+import { useState } from 'react';
 import { createBrowserHistory } from 'history';
-import { Router, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Home from '../pages/Home';
+import About from '../pages/About';
 
 const Routes = ({ routerBase } = {}) => {
+  const [isInQiankun] = useState(() => window.__POWERED_BY_QIANKUN__);
   const basename = window.__POWERED_BY_QIANKUN__ ? routerBase || window.mainAppProps.routerBase : process.env.PUBLIC_URL;
   const history = createBrowserHistory({ basename });
+  const gotoHome = () => {
+    if (isInQiankun) {
+      window.history.pushState(null, '/qiankun/sub-react', '/qiankun/sub-react')
+    } else { // 独立环境，用回history路由来跳转
+      history.push('/qiankun/subapp/sub-react')
+      // TODO: 待优化，跳转后默认没展示页面，暂时先强刷页面
+      window.location.reload();
+    }
+  }
   return (
     <Router history={history} basename={basename}>
       <Switch>
@@ -19,11 +31,12 @@ const Routes = ({ routerBase } = {}) => {
         }} />
         {/* 其他路由 */}
         <Route exact path="/" component={Home} />
+        <Route exact path="/about" component={About} />
         {/* 404 页面 */}
         <Route render={() => (
           <div className="page">
             <h1>404 - 页面未找到</h1>
-            <button className="btn" onClick={() => history.push('/')}>
+            <button className="btn" onClick={gotoHome}>
               返回首页
             </button>
           </div>

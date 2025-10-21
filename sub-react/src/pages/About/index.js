@@ -1,10 +1,9 @@
 import React from 'react';
 import './index.css';
-import logo from '../../logo.svg';
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-function Home(props) {
+function About(props) {
   const history = useHistory();
   const [isInQiankun] = useState(() => window.__POWERED_BY_QIANKUN__);
   const [globalState, setGlobalState] = useState(() => {
@@ -32,14 +31,14 @@ function Home(props) {
 
   const gotoSubVue = () => {
     // 跳转到子应用
-    window.history.pushState(null, 'sub-vue', '/qiankun/sub-vue')
+    window.history.pushState(null, '/qiankun/sub-vue', '/qiankun/sub-vue')
   }
 
-  const gotoAbout = () => {
+  const gotoHome = () => {
     if (isInQiankun) {
-      window.history.pushState(null, '/qiankun/sub-react/about', '/qiankun/sub-react/about')
+      window.history.pushState(null, '/qiankun/sub-react', '/qiankun/sub-react')
     } else { // 独立环境，用回history路由来跳转
-      history.push('/about')
+      history.push('/')
     }
   }
 
@@ -69,7 +68,7 @@ function Home(props) {
 
   return (
     <div className="home">
-      <p>当前处于<code>{ isInQiankun ? 'qiankun' : '独立运行'}</code>环境sub-react应用首页</p>
+      <p>当前处于<code>{ isInQiankun ? 'qiankun' : '独立运行'}</code>环境sub-react应用About页</p>
       <p>sub-react子应用的user state：<code> { JSON.stringify(globalState.user) }</code></p>
       <div className="btns">
         { isInQiankun && <>
@@ -78,11 +77,11 @@ function Home(props) {
           </>
         }
         <button onClick ={changeUsername}>{`改变${isInQiankun ? '全局的' : '独立子应用'}state`}</button>
-        <button onClick ={gotoAbout}>{ `跳转到${isInQiankun ? 'qiankun环境' : '独立运行'}的About页` }</button>
+        <button onClick ={gotoHome}>{ `跳转到${isInQiankun ? 'qiankun环境' : '独立运行'}的首页` }</button>
       </div>
-      <img src={logo} className="App-logo" alt="logo" />
+      <h1>{ `${isInQiankun ? 'qiankun环境' : '独立运行'}sub-react应用About页` }</h1>
     </div>
   );
 }
 
-export default Home;
+export default About;
