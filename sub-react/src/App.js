@@ -2,10 +2,10 @@ import React from 'react';
 import Routes from './router/routers';
 import './App.css';
 
-function App() {
+function App(props = {}) {
   return (
     <div className="App">
-      <Routes />
+      <Routes routerBase={props.routerBase} />
     </div>
   );
 }

@@ -8,7 +8,8 @@ module.exports = {
     );
 
     // Tips：强制设置 publicPath 为子路径，这样直接访问根路径时静态资源会 404
-    config.output.publicPath = '/subapp/sub-react/';
+    // config.output.publicPath = '/subapp/sub-react/';
+    config.output.publicPath = process.env.PUBLIC_URL;
 
     config.output.library = `${name}-[name]`;
     config.output.libraryTarget = 'umd';

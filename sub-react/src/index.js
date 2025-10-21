@@ -15,12 +15,12 @@ function render(props = {}) {
 
   // 如果是在 qiankun 中运行，使用传递的全局状态
   if (window.__POWERED_BY_QIANKUN__) {
-    // 保存主应用传递的方法
-    window.mainAppActions = props;
+    // 保存主应用传递的props
+    window.mainAppProps = props;
   }
 
   ReactDOM.render(
-    <App />,
+    <App { ...props } />,
     container ? container.querySelector('#root') : document.getElementById('root')
   );
 }

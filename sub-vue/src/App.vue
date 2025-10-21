@@ -32,7 +32,7 @@ export default {
     ...mapActions('global', ['setGlobalState']),
     gotoSubReact () {
       // 跳转到子应用
-      window.history.pushState(null, 'sub-react', '/sub-react')
+      window.history.pushState(null, 'sub-react', '/qiankun/sub-react')
     },
     changeUsername () {
       // 也可通过 store.commit('global/setGlobalState', { user: '阿杜' }) 进行操作

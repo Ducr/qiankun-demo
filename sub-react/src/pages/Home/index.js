@@ -16,13 +16,13 @@ function Home(props) {
   });
 
   useEffect(() => {
-    if (window.__POWERED_BY_QIANKUN__ && window.mainAppActions) {
+    if (window.__POWERED_BY_QIANKUN__ && window.mainAppProps) {
       // 初始化获取主应用状态
-      const initialState = window.mainAppActions.getGlobalState?.();
+      const initialState = window.mainAppProps.getGlobalState?.();
       setGlobalState(initialState || {});
 
       // 监听主应用状态变化
-      window.mainAppActions.onGlobalStateChange?.((state, prev) => { // eslint-disable-line no-unused-expressions
+      window.mainAppProps.onGlobalStateChange?.((state, prev) => { // eslint-disable-line no-unused-expressions
         setGlobalState(state);
       }, true);
     }
@@ -30,7 +30,7 @@ function Home(props) {
 
   const gotoSubVue = () => {
     // 跳转到子应用
-    window.history.pushState(null, 'sub-vue', '/sub-vue')
+    window.history.pushState(null, 'sub-vue', '/qiankun/sub-vue')
   }
   const openSubReact = () => {
     if (!isInQiankun) {
@@ -43,8 +43,8 @@ function Home(props) {
   };
 
   const changeUsername = () => {
-    if (window.__POWERED_BY_QIANKUN__ && window.mainAppActions) {
-      window.mainAppActions.setGlobalState?.({ // eslint-disable-line no-unused-expressions
+    if (window.__POWERED_BY_QIANKUN__ && window.mainAppProps) {
+      window.mainAppProps.setGlobalState?.({ // eslint-disable-line no-unused-expressions
         ...globalState,
         user: { name: '阿杜-sub-react-子应用-' + Math.round(Math.random() * 100) }
       });
