@@ -1,13 +1,15 @@
 <template>
   <div class="layout-wrapper">
     <div class="layout-header">
-      <div class="logo">QIANKUN-MAIN</div>
+      <div class="logo" @click="gotoMain()">QIANKUN-DEMO</div>
       <ul class="sub-apps">
-        <li v-for="item in microApps" :class="{active: item.activeRule === current}" :key="item.name" @click="goto(item)">{{ item.name }}</li>
+        <li :class="{active: !current.includes('/qiankun/sub-')}" @click="gotoMain()">main-app</li>
+        <li v-for="item in microApps" :class="{active: current.startsWith(item.activeRule)}" :key="item.name" @click="goto(item)">{{ item.name }}</li>
       </ul>
       <div class="userinfo">主应用的state：{{ JSON.stringify(state) }}</div>
     </div>
-    <div id="subapp-viewport"></div>
+    <router-view v-if="!current.includes('/qiankun/sub-')" class="mainapp-viewport" />
+    <div v-else id="subapp-viewport"></div>
   </div>
 </template>
 
@@ -21,7 +23,8 @@ export default {
     return {
       isLoading: true,
       microApps,
-      current: '/sub-vue/'
+      // current: '/qiankun/sub-vue'
+      current: '/qiankun/main-app'
     }
   },
   computed: {
@@ -46,24 +49,34 @@ export default {
   },
   components: {},
   methods: {
+    gotoMain () {
+      history.pushState(null, process.env.VUE_APP_PUBLIC_URL, process.env.VUE_APP_PUBLIC_URL)
+    },
     goto (item) {
       history.pushState(null, item.activeRule, item.activeRule)
-      // this.current = item.name
     },
     bindCurrent () {
       const path = window.location.pathname
-      if (this.microApps.findIndex(item => item.activeRule === path) >= 0) {
-        this.current = path
-      }
+      this.current = path
+      // if (this.microApps.findIndex(item => item.activeRule === path) >= 0) {
+      //   this.current = path
+      // }
     },
     listenRouterChange () {
       const _wr = function (type) {
         const orig = history[type]
         return function () {
+          // 对跳转到主应用触发加载进度，子应用中由loader方法触发
+          if (!this.current?.includes('/qiankun/sub-')) {
+            NProgress.start()
+          }
           const rv = orig.apply(this, arguments)
           const e = new Event(type)
           e.arguments = arguments
           window.dispatchEvent(e)
+          if (!this.current?.includes('/qiankun/sub-')) {
+            NProgress.done()
+          }
           return rv
         }
       }
@@ -84,6 +97,9 @@ export default {
   },
   mounted () {
     this.listenRouterChange()
+    if (!this.current.includes('/qiankun/sub-')) {
+      NProgress.done()
+    }
   }
 }
 </script>
@@ -92,6 +108,15 @@ export default {
 html, body {
   margin: 0 !important;
   padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
 .layout-wrapper {
   .layout-header {
@@ -103,6 +128,7 @@ html, body {
     .logo {
       float: left;
       margin: 0 50px;
+      cursor: pointer;
     }
     .sub-apps {
       list-style: none;
@@ -122,6 +148,17 @@ html, body {
       position: absolute;
       right: 50px;
       top: 0;
+    }
+  }
+  .mainapp-viewport {
+    text-align: center;
+    color: #2c3e50;
+
+    .btns {
+      margin: 100px;
+    }
+    .btns button {
+      margin: 0 10px;
     }
   }
   #subapp-viewport {

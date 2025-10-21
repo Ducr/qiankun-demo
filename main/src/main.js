@@ -1,12 +1,21 @@
 import Vue from 'vue'
 import App from './App.vue'
-import { registerMicroApps, start, setDefaultMountApp } from 'qiankun'
+import { registerMicroApps, start } from 'qiankun'
 import microApps from './micro-app'
+import routes from './router'
+import VueRouter from 'vue-router'
 import 'nprogress/nprogress.css'
 
 Vue.config.productionTip = false
 
+const router = new VueRouter({
+  base: process.env.BASE_URL,
+  mode: 'history',
+  routes
+})
+
 const instance = new Vue({
+  router,
   render: h => h(App)
 }).$mount('#app')
 
@@ -46,5 +55,6 @@ registerMicroApps(apps, {
     }
   ]
 })
-setDefaultMountApp('/qiankun/sub-vue')
+// 设置主应用启动后默认进入的微应用，暂时调整默认进入主应用
+// setDefaultMountApp('/qiankun/sub-vue')
 start()
