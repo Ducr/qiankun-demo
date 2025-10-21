@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div>
-      <p>当前处于<code>{{ isInQiankun ? 'qiankun' : '独立运行'}}</code>环境sub-vue应用首页</p>
+      <p>当前处于<code>{{ isInQiankun ? 'qiankun' : '独立运行'}}</code>环境sub-vue应用About页</p>
       <p>sub-vue子应用的user state：<code> {{ JSON.stringify(user) }}</code></p>
     </div>
     <div class="btns">
@@ -10,9 +10,9 @@
         <button @click="openSubVue">独立打开sub-vue子应用</button>
       </template>
       <button @click="changeUsername">{{ `改变${isInQiankun ? '全局的' : '独立子应用'}state` }}</button>
-      <button @click="gotoAbout">{{ `跳转到${isInQiankun ? 'qiankun环境' : '独立运行'}的About页` }}</button>
+      <button @click="gotoHome">{{ `跳转到${isInQiankun ? 'qiankun环境' : '独立运行'}的首页` }}</button>
     </div>
-    <img alt="Vue logo" src="../assets/logo.png">
+    <h1>{{ `${isInQiankun ? 'qiankun环境' : '独立运行'}sub-vue应用About页` }}</h1>
   </div>
 </template>
 
@@ -39,11 +39,11 @@ export default {
       // 跳转到子应用
       window.history.pushState(null, '/qiankun/sub-react', '/qiankun/sub-react')
     },
-    gotoAbout () {
+    gotoHome () {
       if (this.isInQiankun) {
-        history.pushState(null, '/qiankun/sub-vue/about', '/qiankun/sub-vue/about')
+        history.pushState(null, '/qiankun/sub-vue', '/qiankun/sub-vue')
       } else { // 独立环境，用回$router来跳转
-        this.$router.push('/about')
+        this.$router.push('/')
       }
     },
     changeUsername () {
